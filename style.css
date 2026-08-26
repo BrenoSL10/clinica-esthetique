@@ -736,12 +736,12 @@ h3,
         height: 40px
     }
 
-    .site-header {
-        grid-template-columns: 1fr auto;
-        min-height: 66px;
-        top: 12px;
-        padding: 0 18px
-    }
+   .site-header {
+    grid-template-columns: 1fr auto auto;
+    min-height: 66px;
+    top: 12px;
+    padding: 0 18px;
+}
 
     .mobile-nav {
         display: block
