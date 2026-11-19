@@ -38,8 +38,7 @@ p {
 
 h1,
 h2,
-h3,
-.brand {
+h3 {
     font-family: Georgia, "Times New Roman", serif;
     font-weight: 400
 }
@@ -67,9 +66,17 @@ h3,
 }
 
 .brand {
-    font-size: clamp(1.6rem, 2.1vw, 2.25rem);
-    font-weight: 600;
-    letter-spacing: -.045em
+    display: inline-flex;
+    align-items: center;
+    justify-self: start
+}
+
+.brand img {
+    display: block;
+    width: auto;
+    height: 48px;
+    max-width: 100%;
+    object-fit: contain
 }
 
 .desktop-nav {
@@ -486,50 +493,149 @@ h3,
 }
 
 .result-card {
-    min-height: 410px;
+    min-width: 0;
     border-radius: 28px;
     overflow: hidden;
+    background: #fffcf7;
+}
+
+.result-comparison {
+    --position: 50%;
+    --thumb-size: 44px;
     position: relative;
-    background-size: cover
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--cream);
 }
 
-.result-1 {
-    background: radial-gradient(circle at 50% 25%, #efd5bd 0 18%, transparent 19%), linear-gradient(135deg, #d9b095, #f4dfc9)
-}
-
-.result-2 {
-    background: radial-gradient(ellipse at 50% 45%, #b87b63 0 15%, transparent 16%), linear-gradient(145deg, #edc4aa, #c58d74)
-}
-
-.result-3 {
-    background: radial-gradient(circle at 50% 35%, #edcbb3 0 22%, transparent 23%), linear-gradient(145deg, #f1dac6, #cda88f)
-}
-
-.result-overlay {
+.comparison-photo,
+.comparison-photo img {
     position: absolute;
-    inset: auto 14px 14px;
-    padding: 22px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, .72);
-    backdrop-filter: blur(12px)
+    inset: 0;
+    width: 100%;
+    height: 100%;
 }
 
-.result-overlay span {
-    color: var(--olive-dark);
-    text-transform: uppercase;
-    letter-spacing: .16em;
-    font-size: .65rem
+.comparison-photo {
+    background: radial-gradient(ellipse at 45% 35%, #f7eddd, #c5b299);
 }
 
-.result-overlay h3 {
-    font-size: 1.8rem;
-    margin: 8px 0
+.comparison-before {
+    clip-path: inset(0 calc(100% - var(--position)) 0 0);
+    background: radial-gradient(ellipse at 45% 35%, #e2e3ce, #9da483);
 }
 
-.result-overlay p {
+.comparison-photo img {
+    object-fit: cover;
+    visibility: hidden;
+}
+
+.has-result-photos .comparison-photo img {
+    visibility: visible;
+}
+
+.comparison-label {
+    position: absolute;
+    z-index: 1;
+    top: 14px;
+    padding: 6px 11px;
+    border-radius: 999px;
+    background: rgba(255, 252, 247, .93);
+    color: var(--ink);
+    font-size: .75rem;
+    font-weight: 700;
+    pointer-events: none;
+}
+
+.comparison-label-before {
+    left: 14px;
+}
+
+.comparison-label-after {
+    right: 14px;
+}
+
+.comparison-divider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--position);
+    width: 3px;
+    transform: translateX(-50%);
+    background: white;
+    box-shadow: 0 0 5px rgba(27, 27, 24, .32);
+    pointer-events: none;
+}
+
+.comparison-handle {
+    position: absolute;
+    top: 50%;
+    left: clamp(22px, var(--position), calc(100% - 22px));
+    transform: translate(-50%, -50%);
+    display: grid;
+    place-items: center;
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    border-radius: 50%;
+    background: #fffcf7;
+    color: var(--ink);
+    box-shadow: 0 2px 12px rgba(27, 27, 24, .22);
+    font-size: 1.5rem;
+    pointer-events: none;
+}
+
+.result-comparison:focus-within .comparison-handle {
+    outline: 3px solid var(--ink);
+    outline-offset: 3px;
+}
+
+.comparison-slider {
+    appearance: none;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: calc(var(--thumb-size) / -2);
+    width: calc(100% + var(--thumb-size));
+    height: 100%;
     margin: 0;
+    opacity: 0;
+    cursor: ew-resize;
+    touch-action: pan-y;
+}
+
+.comparison-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+}
+
+.comparison-slider::-moz-range-thumb {
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    border: 0;
+}
+
+.result-caption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px 12px;
+    padding: 18px 20px;
+}
+
+.result-caption h3 {
+    font-size: 1.45rem;
+    margin: 0;
+}
+
+.result-pending {
     color: var(--muted);
-    font-size: .86rem
+    font-size: .8rem;
+}
+
+.has-result-photos .result-pending {
+    display: none;
 }
 
 .testimonial {
@@ -674,6 +780,10 @@ h3,
     margin-bottom: 8px
 }
 
+.footer-brand img {
+    height: 58px
+}
+
 .footer p {
     color: rgba(255, 255, 255, .55);
     max-width: 240px;
@@ -784,11 +894,8 @@ h3,
     }
 
     .result-grid {
+        max-width: 540px;
         grid-template-columns: 1fr
-    }
-
-    .result-card {
-        min-height: 330px
     }
 
     .cta-arch {
@@ -799,10 +906,6 @@ h3,
 }
 
 @media(max-width:620px) {
-    .brand {
-        font-size: 1.55rem
-    }
-
     .hero {
         min-height: 760px;
         background-position: center
@@ -933,4 +1036,77 @@ h3,
         height: 40px;
         flex-basis: 40px;
     }
+}
+
+.booking-dialog {
+    width: min(460px, calc(100% - 32px));
+    max-height: calc(100% - 32px);
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    background: var(--ivory);
+    color: var(--ink);
+    box-shadow: 0 24px 70px rgba(27, 27, 24, .28);
+}
+
+.booking-dialog::backdrop {
+    background: rgba(27, 27, 24, .62);
+}
+
+body:has(.booking-dialog[open]) {
+    overflow: hidden;
+}
+
+.booking-dialog-content {
+    position: relative;
+    display: grid;
+    gap: 12px;
+    padding: clamp(20px, 5vw, 32px);
+}
+
+.booking-dialog h2 {
+    margin: 0 40px 10px 0;
+    font-size: clamp(1.7rem, 5vw, 2.3rem);
+}
+
+.booking-dialog-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.booking-dialog label {
+    font-size: .92rem;
+    font-weight: 600;
+}
+
+.booking-dialog select {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 12px;
+    border: 1px solid #777463;
+    border-radius: 12px;
+    background: #fffdf8;
+    color: var(--ink);
+    font: inherit;
+}
+
+.booking-dialog-action {
+    margin-top: 8px;
+    background: #4f6040;
+    color: white;
+    font-weight: 600;
+}
+
+.booking-dialog :focus-visible {
+    outline: 2px solid #4f6040;
+    outline-offset: 3px;
 }
